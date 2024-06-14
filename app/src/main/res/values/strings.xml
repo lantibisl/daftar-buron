@@ -3,4 +3,8 @@
     <string name="profil">Profil</string>
     <string name="tutup">Tutup</string>
     <string name="logout">Logout</string>
+    <string name="nama">Nama</string>
+    <string name="batal">Batal</string>
+    <string name="simpan">Simpan</string>
+    <string name="tambah_buron">Tambah Buron</string>
 </resources>
