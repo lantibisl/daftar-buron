@@ -4,9 +4,11 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.d3if0158.daftarburon.model.Buron
 import org.d3if0158.daftarburon.model.OpStatus
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -24,6 +26,11 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface BuronApiService {
+    @GET("api_lantib.php")
+    suspend fun getBuron(
+        @Header("Authorization") userId: String
+    ): List<Buron>
+
     @Multipart
     @POST("api_lantib.php")
     suspend fun postBuron(
@@ -36,6 +43,10 @@ interface BuronApiService {
 object BuronApi {
     val service: BuronApiService by lazy {
         retrofit.create(BuronApiService::class.java)
+    }
+
+    fun getBuronUrl(imageId: String): String {
+        return "${BASE_URL}image.php?id=$imageId"
     }
 }
 

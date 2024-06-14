@@ -26,6 +26,19 @@ class MainViewModel : ViewModel() {
     var errorMessage = mutableStateOf<String?>(null)
         private set
 
+    fun retrieveData(userId: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            status.value = ApiStatus.LOADING
+            try {
+                data.value = BuronApi.service.getBuron(userId)
+                status.value = ApiStatus.SUCCESS
+            } catch (e: Exception) {
+                Log.d("MainViewModel", "Failed: ${e.message}")
+                status.value = ApiStatus.FAILED
+            }
+        }
+    }
+
     fun saveData(userId: String, nama: String, bitmap: Bitmap) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -35,7 +48,8 @@ class MainViewModel : ViewModel() {
                     bitmap.toMultipartBody()
                 )
                 if (result.status == "success")
-                    Log.d("MainViewModel", "Success: ${result.message}")
+//                    Log.d("MainViewModel", "Success: ${result.message}")
+                    retrieveData(userId)
                 else
                     throw Exception(result.message)
             } catch (e: Exception) {
@@ -55,5 +69,9 @@ class MainViewModel : ViewModel() {
         return MultipartBody.Part.createFormData(
             "image", "image.jpg", requestBody
         )
+    }
+
+    fun clearMessage() {
+        errorMessage.value = null
     }
 }

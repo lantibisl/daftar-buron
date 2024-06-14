@@ -7,4 +7,7 @@
     <string name="batal">Batal</string>
     <string name="simpan">Simpan</string>
     <string name="tambah_buron">Tambah Buron</string>
+    <string name="error">Gagal memuat data.. Koneksi error.</string>
+    <string name="try_again">Coba lagi</string>
+    <string name="gambar">Gambar %1$s</string>
 </resources>
