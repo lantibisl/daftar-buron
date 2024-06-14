@@ -39,6 +39,7 @@ import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.ClearCredentialException
 import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -61,6 +62,8 @@ fun MainScreen() {
     val context = LocalContext.current
     val dataStore = UserDataStore(context)
     val user by dataStore.userFlow.collectAsState(User())
+
+    val viewModel: MainViewModel = viewModel()
 
     var showDialog by remember { mutableStateOf(false) }
 
@@ -130,7 +133,8 @@ fun MainScreen() {
         if (showBuronDialog) {
             BuronDialog(
                 bitmap = bitmap,
-                onDismissRequest = { showBuronDialog = false }) {
+                onDismissRequest = { showBuronDialog = false }) {nama ->
+                viewModel.saveData(user.email, nama, bitmap!!)
                 showBuronDialog = false
             }
         }

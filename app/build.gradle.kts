@@ -75,6 +75,7 @@ dependencies {
     implementation(libs.moshi.kotlin)
     implementation(libs.coil.compose)
     implementation(libs.android.image.cropper)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
