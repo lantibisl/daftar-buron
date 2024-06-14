@@ -130,20 +130,22 @@ fun MainScreen() {
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                val options = CropImageContractOptions(
-                    null, CropImageOptions(
-                        imageSourceIncludeGallery = false,
-                        imageSourceIncludeCamera = true,
-                        fixAspectRatio = true
+            if (user.email.isNotEmpty()) {
+                FloatingActionButton(onClick = {
+                    val options = CropImageContractOptions(
+                        null, CropImageOptions(
+                            imageSourceIncludeGallery = false,
+                            imageSourceIncludeCamera = true,
+                            fixAspectRatio = true
+                        )
                     )
-                )
-                launcher.launch(options)
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(id = R.string.tambah_buron)
-                )
+                    launcher.launch(options)
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = stringResource(id = R.string.tambah_buron)
+                    )
+                }
             }
         }
     ) { padding ->
@@ -159,7 +161,7 @@ fun MainScreen() {
         if (showBuronDialog) {
             BuronDialog(
                 bitmap = bitmap,
-                onDismissRequest = { showBuronDialog = false }) {nama ->
+                onDismissRequest = { showBuronDialog = false }) { nama ->
                 viewModel.saveData(user.email, nama, bitmap!!)
                 showBuronDialog = false
             }
