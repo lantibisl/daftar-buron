@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -166,6 +168,7 @@ fun MainScreen() {
                 showBuronDialog = false
             }
         }
+
         if (errorMessage != null) {
             Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             viewModel.clearMessage()
@@ -202,7 +205,9 @@ fun ScreenContent(viewModel: MainViewModel, userId: String, modifier: Modifier) 
                 contentPadding = PaddingValues(bottom = 80.dp)
             ) {
                 items(data) {
-                    ListItem(buron = it)
+                    ListItem(buron = it, onDelete = { buronId ->
+                        viewModel.deleteBuron(userId, buronId)
+                    })
                 }
             }
         }
@@ -227,7 +232,9 @@ fun ScreenContent(viewModel: MainViewModel, userId: String, modifier: Modifier) 
 }
 
 @Composable
-fun ListItem(buron: Buron) {
+fun ListItem(buron: Buron, onDelete: (Int) -> Unit) {
+    var hapusDialog by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .padding(4.dp)
@@ -254,13 +261,32 @@ fun ListItem(buron: Buron) {
                 .background(Color(red = 0f, green = 0f, blue = 0f, alpha = 0.5f))
                 .padding(4.dp)
         ) {
-            Text(
-                text = buron.nama_buronan,
-                fontWeight = FontWeight.Bold,
-                color = Color.White
-            )
-
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = buron.nama_buronan,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+                IconButton(onClick = { hapusDialog = true }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.hapus),
+                        tint = Color.White
+                    )
+                }
+            }
         }
+    }
+    HapusDialog(
+        openDialog = hapusDialog,
+        onDismissRequest = { hapusDialog = false }
+    ) {
+        hapusDialog = false
+        onDelete(buron.id)
     }
 }
 

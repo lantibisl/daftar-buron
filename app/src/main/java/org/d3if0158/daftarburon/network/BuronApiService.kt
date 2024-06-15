@@ -8,11 +8,13 @@ import org.d3if0158.daftarburon.model.Buron
 import org.d3if0158.daftarburon.model.OpStatus
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 private const val BASE_URL = "https://unspoken.my.id/"
 
@@ -37,6 +39,12 @@ interface BuronApiService {
         @Header("Authorization") userId: String,
         @Part("nama_buronan") nama: RequestBody,
         @Part image: MultipartBody.Part
+    ): OpStatus
+
+    @DELETE("api_lantib.php")
+    suspend fun deleteBuron(
+        @Header("Authorization") userId: String,
+        @Query("id") id: Int
     ): OpStatus
 }
 

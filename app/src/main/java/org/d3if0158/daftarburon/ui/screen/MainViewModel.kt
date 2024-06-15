@@ -48,12 +48,27 @@ class MainViewModel : ViewModel() {
                     bitmap.toMultipartBody()
                 )
                 if (result.status == "success")
-//                    Log.d("MainViewModel", "Success: ${result.message}")
                     retrieveData(userId)
                 else
                     throw Exception(result.message)
             } catch (e: Exception) {
                 Log.d("MainViewModel", "Failure: ${e.message}")
+                errorMessage.value = "Error: ${e.message}"
+            }
+        }
+    }
+
+    fun deleteBuron(userId: String, hewanId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val result = BuronApi.service.deleteBuron(userId, hewanId)
+                if (result.status == "success") {
+                    retrieveData(userId)
+                } else {
+                    throw Exception(result.message)
+                }
+            } catch (e: Exception) {
+                Log.d("MainViewModel", "Failed to delete: ${e.message}")
                 errorMessage.value = "Error: ${e.message}"
             }
         }
